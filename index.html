@@ -38,7 +38,7 @@
      {
       todoList.map(item => {
        console.log(item);
-       return (<TodoItem key={item.id} data={item} />)
+       return (<TodoItem key={item.id} data={item} updateHelper={this.props.updateItem}/>)
       })
      }
     </div>)
@@ -52,7 +52,11 @@
    render(){
     return(
             <div>
-             <input type="checkbox"/>
+             <input type="checkbox" checked={this.props.data.done}
+             onChange={() => {
+              this.props.updateHelper(this.props.data.id, !this.props.data.done)
+             }}
+             />
              <span>{this.props.data.title}</span>
              <button>delete</button>
             </div>)
@@ -83,13 +87,14 @@
      ]
     };
     this.addItem = this.addItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
    };
    render(){
     return(
     <div>
      <TodoHD addTodo={this.addItem}/>
      <hr/>
-     <TodoBD todoList={this.state.todos}/>
+     <TodoBD todoList={this.state.todos} updateItem={this.updateItem} />
      <hr/>
      <TodoFT/>
     </div>)
@@ -103,6 +108,11 @@
       ]
     });
    };
+   updateItem(id, done) {
+    this.setState({
+     todos:this.state.todos.map(item => item.id === id ? {...item, done:done} : item)
+    });
+   }
   }
   ReactDOM.render(
           <App />, document.getElementById('root')
