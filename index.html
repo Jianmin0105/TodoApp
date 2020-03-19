@@ -68,11 +68,12 @@
   }
   class TodoFT extends React.Component {
    render(){
+    const list = this.props.todoList;
     return(
     <div>
-     <button>show all</button>
-     <button>show done</button>
-     <button>show not done</button>
+     <button>show all ({list.length})</button>
+     <button>show done ({list.filter(item => item.done).length})</button>
+     <button>show not done ({list.filter(item => !item.done).length})</button>
     </div>
     )
 
@@ -100,7 +101,7 @@
      <hr/>
      <TodoBD todoList={this.state.todos} updateItem={this.updateItem} deleteItem={this.deleteItem}/>
      <hr/>
-     <TodoFT/>
+     <TodoFT todoList={this.state.todos}/>
     </div>)
 
    };
