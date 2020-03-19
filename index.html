@@ -1,20 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
- <title>Test</title>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+ <meta charset="UTF-8">
+ <title>Title</title>
+ <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+ <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
  <meta charset="utf-8" />
 </head>
 <body>
- <div id="root">hello, React</div>
- <script type="text/babel">
+<div id="root"></div>
 
- ReactDOM.render(
-     <App />,
-             document.getElementById("root")
-   )
- </script>
+<script type="text/babel">
+  class TodoHD extends React.Component {
+   constructor() {
+    super();
+    this.input = React.createRef();
+   }
+   render(){
+    return(
+            <div>
+             <input type="text" ref={this.input} placeholder="Compose new task"/>
+             <button onClick={
+              () => {console.log(this.input.current.value);
+              this.props.addTodo(this.input.current.value)}
+             }> add new task</button>
+            </div>)
+
+   }
+  }
+  class TodoBD extends React.Component {
+   render(){
+    const {todoList} = this.props;
+    console.log(todoList);
+    return(
+    <div>
+     {
+      todoList.map(item => {
+       console.log(item);
+       return (<TodoItem key={item.id} data={item} />)
+      })
+     }
+    </div>)
+
+   }
+  }
+  class TodoItem extends React.Component {
+   constructor() {
+    super();
+   }
+   render(){
+    return(
+            <div>
+             <input type="checkbox"/>
+             <span>{this.props.data.title}</span>
+             <button>delete</button>
+            </div>)
+
+   }
+  }
+  class TodoFT extends React.Component {
+   render(){
+    return(
+    <div>
+     <button>show all</button>
+     <button>show done</button>
+     <button>show not done</button>
+    </div>
+    )
+
+   }
+  }
+  class App extends React.Component {
+   constructor(props) {
+    super(props);
+    this.state={
+     todos:[
+      {id: 1, title:"task1", done:false},
+      {id: 2, title:"task2", done:false},
+      {id: 3, title:"task3", done:false},
+      {id: 4, title:"task4", done:false}
+     ]
+    };
+    this.addItem = this.addItem.bind(this);
+   };
+   render(){
+    return(
+    <div>
+     <TodoHD addTodo={this.addItem}/>
+     <hr/>
+     <TodoBD todoList={this.state.todos}/>
+     <hr/>
+     <TodoFT/>
+    </div>)
+
+   };
+   addItem(item) {
+    console.log(item);
+    this.setState({
+     todos:[...this.state.todos,
+      {id: Math.floor(Math.random() * 100), title:item, done:false}
+      ]
+    });
+   };
+  }
+  ReactDOM.render(
+          <App />, document.getElementById('root')
+  )
+</script>
 </body>
 </html>
