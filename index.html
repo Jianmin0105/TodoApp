@@ -36,7 +36,12 @@
     return(
     <div>
      {
-      todoList.map(item => {
+      todoList.filter(item => {
+       const type = this.props.showType;
+       if(type === 1) return item;
+       if (type === 2) return item.done;
+       if (type === 3) return !item.done;
+      }).map(item => {
        console.log(item);
        return (<TodoItem key={item.id} data={item} updateHelper={this.props.updateItem}
                          deleteHelper={this.props.deleteItem}/>)
@@ -71,9 +76,12 @@
     const list = this.props.todoList;
     return(
     <div>
-     <button>show all ({list.length})</button>
-     <button>show done ({list.filter(item => item.done).length})</button>
-     <button>show not done ({list.filter(item => !item.done).length})</button>
+     <button onClick={ () => this.props.changeType(1)
+     } className={this.props.type === 1 ? "active" : null}>show all ({list.length})</button>
+     <button onClick={ () => this.props.changeType(2)
+     } className={this.props.type === 2 ? "active" : null}>show done ({list.filter(item => item.done).length})</button>
+     <button onClick={ () => this.props.changeType(3)
+     } className={this.props.type === 3 ? "active" : null}>show not done ({list.filter(item => !item.done).length})</button>
     </div>
     )
 
@@ -88,20 +96,22 @@
       {id: 2, title:"task2", done:false},
       {id: 3, title:"task3", done:false},
       {id: 4, title:"task4", done:false}
-     ]
+     ],
+     type: 1
     };
     this.addItem = this.addItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.changeType = this.changeType.bind(this);
    };
    render(){
     return(
     <div>
      <TodoHD addTodo={this.addItem}/>
      <hr/>
-     <TodoBD todoList={this.state.todos} updateItem={this.updateItem} deleteItem={this.deleteItem}/>
+     <TodoBD todoList={this.state.todos} showType={this.state.type} updateItem={this.updateItem} deleteItem={this.deleteItem}/>
      <hr/>
-     <TodoFT todoList={this.state.todos}/>
+     <TodoFT todoList={this.state.todos} changeType={this.changeType} type={this.state.type}/>
     </div>)
 
    };
@@ -122,6 +132,9 @@
     this.setState({
      todos:this.state.todos.filter(item => item.id !== id)
     });
+   };
+   changeType(type) {
+    this.setState({type})
    }
   }
   ReactDOM.render(
