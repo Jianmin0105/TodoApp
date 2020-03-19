@@ -38,7 +38,8 @@
      {
       todoList.map(item => {
        console.log(item);
-       return (<TodoItem key={item.id} data={item} updateHelper={this.props.updateItem}/>)
+       return (<TodoItem key={item.id} data={item} updateHelper={this.props.updateItem}
+                         deleteHelper={this.props.deleteItem}/>)
       })
      }
     </div>)
@@ -58,7 +59,9 @@
              }}
              />
              <span>{this.props.data.title}</span>
-             <button>delete</button>
+             <button onClick={() => {
+              this.props.deleteHelper(this.props.data.id);
+             }}>delete</button>
             </div>)
 
    }
@@ -88,13 +91,14 @@
     };
     this.addItem = this.addItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
    };
    render(){
     return(
     <div>
      <TodoHD addTodo={this.addItem}/>
      <hr/>
-     <TodoBD todoList={this.state.todos} updateItem={this.updateItem} />
+     <TodoBD todoList={this.state.todos} updateItem={this.updateItem} deleteItem={this.deleteItem}/>
      <hr/>
      <TodoFT/>
     </div>)
@@ -111,6 +115,11 @@
    updateItem(id, done) {
     this.setState({
      todos:this.state.todos.map(item => item.id === id ? {...item, done:done} : item)
+    });
+   };
+   deleteItem(id) {
+    this.setState({
+     todos:this.state.todos.filter(item => item.id !== id)
     });
    }
   }
