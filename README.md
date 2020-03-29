@@ -8,5 +8,5 @@ The block in Pink means child to parent communication, the green block is parent
 
 2. Below is the completed todoApp in chrome.
 <p align="center">
-<img src="https://github.com/Jianmin0105/images/blob/master/todoApp-look.PNG" width = "30%" height = "30%" align=center />
+<img src="https://github.com/Jianmin0105/images/blob/master/TodoApp-demo.gif" width = "30%" height = "30%" align=center />
 </p>
